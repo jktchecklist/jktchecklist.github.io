@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content="Building a brighter future for the nation! Innovates Vibration Exposure Simulation based on literature standard to drive the enlightenment and intellectual development of future generations sustainably.">
     <title>Vibration Exposure Simulation A(8) - Decision Support Tool</title>
+    
+    <!-- FIX: Cleaned up head section. Removed broken local CSS links and redundant favicons. -->
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.svg" />
     <link rel="stylesheet" href="../assets/libs/owl.carousel/dist/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="../assets/libs/aos-master/dist/aos.css">
@@ -15,10 +17,6 @@
     <link rel="icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.png" type="image/png" sizes="32x32">
     <link rel="icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.png" type="image/png" sizes="16x16">
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.png">
-
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 <style>
   body {
     font-family: system-ui, sans-serif;
@@ -237,6 +235,7 @@
 
     <div>
       <h2 id="t_opts">Schedule Options & A(8)</h2>
+      <div class="small" style="margin-bottom: 8px;">Mode: <b id="dutyMode"></b></div>
       <div class="small" id="t_presethint">Add row: Work′ + Break′ per hour. <b>Click a row to update the donut chart & curve.</b></div>
 
       <div class="controls-inline" aria-label="Quick duty slider">
@@ -274,12 +273,7 @@
     <div>
       <h3 id="t_chart2title">Risk Analysis vs Shift Duration</h3>
       <div class="chartbox"><canvas id="chartA8"></canvas></div>
-      <div class="controls-inline">
-        <label class="small" style="margin:0"><input type="checkbox" id="yManual"> Manual Y-axis</label>
-        <label class="small">Min <input id="yMin" type="number" class="num-sm" step="0.1" value="0"></label>
-        <label class="small">Max <input id="yMax" type="number" class="num-sm" step="0.1" value="8"></label>
-        <button class="btn secondary small" id="btnApplyY">Apply</button>
-      </div>
+      <!-- REMOVED: Manual Y-axis controls are no longer needed -->
       <div class="small" id="t_chart2hint">Curves auto-generated from Calculated, Optimized (5-min step), and Selected duties.</div>
     </div>
   </div>
@@ -533,6 +527,7 @@ const Cfg = () => ({
   warn: cssVar('--warn') || '#ca8a04',
   bad: cssVar('--bad') || '#b91c1c',
   line: cssVar('--line') || '#e5e7eb',
+  lineMinor: cssVar('--line') + '80', // REVISI: Warna untuk garis minor
   breakGreen: cssVar('--breakGreen') || '#bff2cf'
 });
 Chart.defaults.animation = false;
@@ -544,8 +539,8 @@ const perfMeter = {
 
 /* --- i18n (hanya label tabel RR yang berubah: kolom pertama menjadi "m/s²") --- */
 const T = {
-  en:{title:"Vibration Exposure Simulation A(8) (EU 2002/44/EC)",sub:"Formula: A(8) = aₕᵥ · √(T / 8), T in hours; normalized to 8 h",inputs:"Inputs",ahvlabel:"aₕᵥ (m/s²) – tool RMS",ahvhint:"Example: 2.50 m/s² (A(8) equals 2.5 if used for full 8 h)",targetlabel:"Target A(8) (m/s²)",targethint:"Recommended <= 2.50 as a safety margin",shiftlabel:"Shift duration (h)",shifthint:"Exposure time ≤ shift; A(8) normalized to 8 h",toolhlabel:"Tool hours/day (total)",toolhhint:"For minimum operators (rotation)",a8fulltxt:"If used continuously for the whole shift, A(8) = ",tmax8txt:"Max exposure for target (8-h basis): ",tmaxlimtxt:"Exposure limited by shift: ",perhourtxt:"Per-hour recommendation: ",opsneedtxt:"Operators needed (min): ",opts:"Schedule Options & A(8)",presethint:"Add row: Work′ + Break′ per hour. <b>Click a row to update the donut chart & curve.</b>",colScheme:"Per-hour scheme",colT:"T (h/day)",colStatus:"Status",dutydef:"Duty = work minutes per hour / 60. Effective T = duty × shift (≤ shift). A(8)=aₕᵥ·√(T/8).",chart1title:"Work vs Break per Hour",chart2title:"Risk Analysis vs Shift Duration",chart2hint:"Curves from Calculated, Optimized (5′ step), and Selected duties.",sec2:"Worker Rotation",sec2p:"If the total workload exceeds the maximum exposure time per person, divide the work among several operators. Rotation is a very effective administrative control to reduce individual exposure. Minimum operators = ceil(Total Tool Hours / T<sub>max</sub>).",sec3:"Engineering Controls",sec3ul:["<b>Top Priority:</b> Use low-vibration tool models or anti-vibration handles.","Perform regular maintenance: balancing, alignment, replace worn components that cause vibration."],sec4:"Administrative Controls",sec4ul:["Implement work & break schedules (vibration breaks) to lower daily exposure (T).","Schedule high-vibration tasks at the start of the shift when workers are physically optimal."],sec5:"Training & Work Technique",sec5ul:["Grip the tool as lightly as possible (without losing control) to minimize vibration transmission.","Use good posture and avoid awkward positions that increase strain on hands and arms."],sec6:"PPE",sec6ul:["Use certified anti-vibration gloves (EN ISO 10819). Their effectiveness is limited at low frequencies.","PPE is not a substitute for engineering or administrative controls."],foot:"EU thresholds: EAV = 2.5 m/s² (action required); ELV = 5.0 m/s² (must not be exceeded). Control hierarchy: Engineering > Administrative > PPE.",pills:{below:"Below EAV",at:"At EAV",between:"Between EAV–ELV",above:"Above ELV!",target:"Target-based",shift:"Shift limit",duty:"Duty cycle",rot:"Rotation"},ann:{eav:"EAV: Action Level (2.5)",elv:"ELV: Limit Value (5.0)"},mode:{target:"target",selected:"selected"},rr:{cap:"Daily exposure duration →",mag:"m/s²"}},
-  id:{title:"Simulasi Paparan Getaran A(8) (EU 2002/44/EC)",sub:"Rumus: A(8) = aₕᵥ · √(T / 8), T dalam jam; normalisasi ke 8 jam",inputs:"Input",ahvlabel:"aₕᵥ (m/s²) – RMS alat",ahvhint:"Contoh: 2.50 m/s² (A(8) = 2.5 jika 8 jam penuh)",targetlabel:"Target A(8) (m/s²)",targethint:"Disarankan <= 2,50 sebagai margin aman",shiftlabel:"Durasi shift (jam)",shifthint:"Paparan ≤ durasi shift; A(8) dinormalisasi ke 8 jam",toolhlabel:"Total jam alat/hari",toolhhint:"Untuk hitung operator minimum (rotasi)",a8fulltxt:"Jika dipakai terus sepanjang shift, A(8) = ",tmax8txt:"Durasi paparan maksimum (target, basis 8 jam): ",tmaxlimtxt:"Batas paparan dibatasi shift: ",perhourtxt:"Rekomendasi per jam: ",opsneedtxt:"Kebutuhan operator (min): ",opts:"Opsi Jadwal & A(8)",presethint:"Tambah baris: Work′ + Break′ per jam. <b>Klik baris untuk update chart.</b>",colScheme:"Skema per jam",colT:"T (jam/hari)",colStatus:"Status",dutydef:"Duty = menit kerja per jam / 60. T efektif = duty × durasi shift (≤ shift). A(8)=aₕᵥ·√(T/8).",chart1title:"Chart: Work vs Break per Jam",chart2title:"Chart: Analisis Risiko A(8) vs Durasi Shift",chart2hint:"Kurva dari duty Kalkulasi, Optimasi (kelipatan 5′), dan Terpilih.",sec2:"Rotasi Pekerja",sec2p:"Jika beban kerja total > T<sub>max</sub> per orang, bagi ke beberapa operator. Rotasi efektif menurunkan paparan.",sec3:"Kontrol Rekayasa",sec3ul:["Utamakan alat low-vibration atau pegangan anti-getaran.","Rawat berkala: balancing, alignment, ganti komponen aus."],sec4:"Kontrol Administratif",sec4ul:["Jadwal kerja & jeda menurunkan T.","Jadwalkan pekerjaan getaran tinggi di awal shift."],sec5:"Pelatihan & Teknik Kerja",sec5ul:["Pegang seringan mungkin tanpa kehilangan kontrol.","Gunakan postur baik; hindari posisi canggung."],sec6:"APD",sec6ul:["Sarung tangan anti-getaran (EN ISO 10819).","APD bukan pengganti kontrol lain."],foot:"Ambang EU: EAV = 2,5 m/s²; ELV = 5,0 m/s².",pills:{below:"Di bawah EAV",at:"Tepat EAV",between:"Antara EAV–ELV",above:"Di atas ELV!",target:"Berbasis target",shift:"Batas shift",duty:"Duty cycle",rot:"Rotasi"},ann:{eav:"EAV: Level Aksi (2.5)",elv:"ELV: Nilai Batas (5.0)"},mode:{target:"target",selected:"terpilih"},rr:{cap:"Durasi paparan harian →",mag:"m/s²"}}
+  en:{title:"Vibration Exposure Simulation A(8) (EU 2002/44/EC)",sub:"Formula: A(8) = aₕᵥ · √(T / 8), T in hours; normalized to 8 h",inputs:"Inputs",ahvlabel:"aₕᵥ (m/s²) – tool RMS",ahvhint:"Example: 2.50 m/s² (A(8) equals 2.5 if used for full 8 h)",targetlabel:"Target A(8) (m/s²)",targethint:"Recommended <= 2.50 as a safety margin",shiftlabel:"Shift duration (h)",shifthint:"Exposure time ≤ shift; A(8) normalized to 8 h",toolhlabel:"Tool hours/day (total)",toolhhint:"For minimum operators (rotation)",a8fulltxt:"If used continuously for the whole shift, A(8) = ",tmax8txt:"Max exposure for target (8-h basis): ",tmaxlimtxt:"Exposure limited by shift: ",perhourtxt:"Per-hour recommendation: ",opsneedtxt:"Operators needed (min): ",opts:"Schedule Options & A(8)",presethint:"Add row: Work′ + Break′ per hour. <b>Click a row to update the donut chart & curve.</b>",colScheme:"Per-hour scheme",colT:"T (h/day)",colStatus:"Status",dutydef:"Duty = work minutes per hour / 60. Effective T = duty × shift (≤ shift). A(8)=aₕᵥ·√(T/8).",chart1title:"Work vs Break per Hour",chart2title:"Risk Analysis vs aₕᵥ",chart2hint:"A single curve representing the active work schedule.",sec2:"Worker Rotation",sec2p:"If the total workload exceeds the maximum exposure time per person, divide the work among several operators. Rotation is a very effective administrative control to reduce individual exposure. Minimum operators = ceil(Total Tool Hours / T<sub>max</sub>).",sec3:"Engineering Controls",sec3ul:["<b>Top Priority:</b> Use low-vibration tool models or anti-vibration handles.","Perform regular maintenance: balancing, alignment, replace worn components that cause vibration."],sec4:"Administrative Controls",sec4ul:["Implement work & break schedules (vibration breaks) to lower daily exposure (T).","Schedule high-vibration tasks at the start of the shift when workers are physically optimal."],sec5:"Training & Work Technique",sec5ul:["Grip the tool as lightly as possible (without losing control) to minimize vibration transmission.","Use good posture and avoid awkward positions that increase strain on hands and arms."],sec6:"PPE",sec6ul:["Use certified anti-vibration gloves (EN ISO 10819). Their effectiveness is limited at low frequencies.","PPE is not a substitute for engineering or administrative controls."],foot:"EU thresholds: EAV = 2.5 m/s² (action required); ELV = 5.0 m/s² (must not be exceeded). Control hierarchy: Engineering > Administrative > PPE.",pills:{below:"Below EAV",at:"At EAV",between:"Between EAV–ELV",above:"Above ELV!",target:"Target-based",shift:"Shift limit",duty:"Duty cycle",rot:"Rotation"},ann:{eav:"EAV: Action Level (2.5)",elv:"ELV: Limit Value (5.0)"},mode:{target:"target",selected:"selected"},rr:{cap:"Daily exposure duration →",mag:"m/s²"}},
+  id:{title:"Simulasi Paparan Getaran A(8) (EU 2002/44/EC)",sub:"Rumus: A(8) = aₕᵥ · √(T / 8), T dalam jam; normalisasi ke 8 jam",inputs:"Input",ahvlabel:"aₕᵥ (m/s²) – RMS alat",ahvhint:"Contoh: 2.50 m/s² (A(8) = 2.5 jika 8 jam penuh)",targetlabel:"Target A(8) (m/s²)",targethint:"Disarankan <= 2,50 sebagai margin aman",shiftlabel:"Durasi shift (jam)",shifthint:"Paparan ≤ durasi shift; A(8) dinormalisasi ke 8 jam",toolhlabel:"Total jam alat/hari",toolhhint:"Untuk hitung operator minimum (rotasi)",a8fulltxt:"Jika dipakai terus sepanjang shift, A(8) = ",tmax8txt:"Durasi paparan maksimum (target, basis 8 jam): ",tmaxlimtxt:"Batas paparan dibatasi shift: ",perhourtxt:"Rekomendasi per jam: ",opsneedtxt:"Kebutuhan operator (min): ",opts:"Opsi Jadwal & A(8)",presethint:"Tambah baris: Work′ + Break′ per jam. <b>Klik baris untuk update chart.</b>",colScheme:"Skema per jam",colT:"T (jam/hari)",colStatus:"Status",dutydef:"Duty = menit kerja per jam / 60. T efektif = duty × durasi shift (≤ shift). A(8)=aₕᵥ·√(T/8).",chart1title:"Chart: Work vs Break per Jam",chart2title:"Chart: Analisis Risiko A(8) vs aₕᵥ",chart2hint:"Satu kurva mewakili jadwal kerja yang aktif.",sec2:"Rotasi Pekerja",sec2p:"Jika beban kerja total > T<sub>max</sub> per orang, bagi ke beberapa operator. Rotasi efektif menurunkan paparan.",sec3:"Kontrol Rekayasa",sec3ul:["Utamakan alat low-vibration atau pegangan anti-getaran.","Rawat berkala: balancing, alignment, ganti komponen aus."],sec4:"Kontrol Administratif",sec4ul:["Jadwal kerja & jeda menurunkan T.","Jadwalkan pekerjaan getaran tinggi di awal shift."],sec5:"Pelatihan & Teknik Kerja",sec5ul:["Pegang seringan mungkin tanpa kehilangan kontrol.","Gunakan postur baik; hindari posisi canggung."],sec6:"APD",sec6ul:["Sarung tangan anti-getaran (EN ISO 10819).","APD bukan pengganti kontrol lain."],foot:"Ambang EU: EAV = 2,5 m/s²; ELV = 5,0 m/s².",pills:{below:"Di bawah EAV",at:"Tepat EAV",between:"Antara EAV–ELV",above:"Di atas ELV!",target:"Berbasis target",shift:"Batas shift",duty:"Duty cycle",rot:"Rotasi"},ann:{eav:"EAV: Level Aksi (2.5)",elv:"ELV: Nilai Batas (5.0)"},mode:{target:"target",selected:"terpilih"},rr:{cap:"Durasi paparan harian →",mag:"m/s²"}}
 };
 let lang='en';
 
@@ -561,7 +556,6 @@ let customPresets=[];
 let chartWB, chartA8;
 let activeDuty = 45/60;                // Selected (preset/slider/RR)
 let lastOptimizedDuty = null;          // Optimized (5' step)
-let yAxisManual = false, yAxisMin = 0, yAxisMax = 6;
 
 /* --- RR --- */
 const rrTimesMin = [5,15,30,60,120,180,240,300,360,480,600];
@@ -582,8 +576,7 @@ const saveState = () => {
     shiftH:+document.getElementById('shiftH').value,
     toolHours:+document.getElementById('toolHours').value,
     lang, theme:document.documentElement.getAttribute('data-theme'),
-    presets:customPresets, activeDuty, lastOptimizedDuty,
-    yAxisManual, yAxisMin, yAxisMax
+    presets:customPresets, activeDuty, lastOptimizedDuty
   };
   localStorage.setItem('a8sim.state', JSON.stringify(state));
   return state;
@@ -600,9 +593,6 @@ const applyState = (s) => {
   activeDuty = typeof s.activeDuty==='number'? s.activeDuty : activeDuty;
   lastOptimizedDuty = typeof s.lastOptimizedDuty==='number'? s.lastOptimizedDuty : lastOptimizedDuty;
   if(s.theme) setTheme(s.theme);
-  yAxisManual=!!s.yAxisManual; yAxisMin=+s.yAxisMin||0; yAxisMax=+s.yAxisMax||6;
-  document.getElementById('yManual').checked=yAxisManual;
-  document.getElementById('yMin').value=yAxisMin; document.getElementById('yMax').value=yAxisMax;
 };
 
 /* --- theme --- */
@@ -632,44 +622,83 @@ function buildCharts(){
       elements:{line:{borderJoinStyle:'round'}},
       interaction:{mode:'index',intersect:false},
       plugins:{
-        legend:{display:true,position:'top',labels:{color:Cfg().ink}},
+        legend:{display:false}, 
         decimation:{enabled:true,algorithm:'lttb',samples:90},
         annotation:{annotations:{}},
         tooltip:{
           callbacks:{
-            title(items){ if(!items?.length) return ''; const m=+items[0].label; return (lang==='id'?`Shift: ${m} menit (${(m/60).toFixed(1)} jam)`:`Shift: ${m} min (${(m/60).toFixed(1)} h)`); },
-            label(ctx){ const a8=+ctx.parsed.y; return `${ctx.dataset.label}: ${a8.toFixed(2)} m/s²`; },
+            title(items){ if(!items?.length) return ''; const ahv=+items[0].label; return `aₕᵥ: ${ahv.toFixed(2)} m/s²`; },
+            label(ctx){ const a8=+ctx.parsed.y; return `A(8): ${a8.toFixed(2)} m/s²`; },
             afterLabel(ctx){
-              const EAV=2.5, ELV=5.0, a8=+ctx.parsed.y, mins=+ctx.label, duty = ctx.dataset._duty ?? 0;
-              const T = duty*(mins/60);
+              const EAV=2.5, ELV=5.0, a8=+ctx.parsed.y;
               const m = (x,th)=>((x/th)-1)*100, s=(v)=> (v>=0?'+':'')+v.toFixed(1)+'%';
-              return [`EAV 2.50: ${s(m(a8,EAV))}`,`ELV 5.00: ${s(m(a8,ELV))}`, (lang==='id'?`T: ${T.toFixed(2)} jam`:`T: ${T.toFixed(2)} h`)];
+              return [`EAV 2.50: ${s(m(a8,EAV))}`,`ELV 5.00: ${s(m(a8,ELV))}`];
             }
           }
         }
       },
       scales:{
-        x:{title:{display:true,text: lang==='id'?'Durasi Shift (menit)':'Shift Duration (minutes)'},grid:{color: C.line},ticks:{color: C.muted}},
-        y:{title:{display:true,text:'A(8) (m/s²)'},min:0,grid:{color: C.line},ticks:{color: C.muted}}
+        x:{
+          type: 'linear', 
+          title:{display:true,text: 'aₕᵥ (m/s²) – tool RMS'},
+          min: 0, 
+          max: 20, 
+          grid:{
+            color: (ctx) => (ctx.tick.major ? Cfg().line : Cfg().lineMinor),
+            lineWidth: (ctx) => (ctx.tick.major ? 1.2 : 0.6), // REVISI: Ketebalan garis
+          },
+          ticks:{
+            color: C.muted,
+            stepSize: 5 // REVISI: Atur interval angka major
+          }
+        },
+        y:{
+          type: 'logarithmic',
+          title:{display:true,text:'A(8) (m/s²)'},
+          min: 0.1, 
+          max: 20, 
+          grid:{
+            color: (ctx) => (ctx.tick.major ? Cfg().line : Cfg().lineMinor),
+            lineWidth: (ctx) => (ctx.tick.major ? 1.2 : 0.6), // REVISI: Ketebalan garis
+          },
+          ticks:{
+            color: C.muted,
+            callback: function(value, index, values) {
+              if ([0.1, 1, 5, 10, 20].includes(value)) {
+                return value.toString();
+              }
+              if (value === 2.5) return '2.5'; // Pastikan 2.5 selalu ada
+            }
+          }
+        }
       }
     },
     plugins:[perfMeter]
   });
-  applyChartTheme(); applyYAxis();
+  applyChartTheme();
 }
 
 /* Buat dataset kurva dari duty */
 function buildCurveDataset(label, duty, color){
-  const ahv=+document.getElementById('ahv').value;
-  const xs=[],ys=[];
-  for(let m=60;m<=720;m+=10){
-    const T = duty*(m/60);
+  const shiftH=+document.getElementById('shiftH').value;
+  const T = duty*shiftH;
+  if (T <= 0) return { label, data: [], _duty: duty, borderColor: color };
+  
+  const ys=[];
+  const x_max = 20;
+  
+  for(let ahv = 0; ahv <= x_max; ahv += 0.1) { // REVISI: Titik data lebih rapat untuk kurva lebih halus
     const a8 = ahv*Math.sqrt(T/8);
-    xs.push(m); ys.push(+a8.toFixed(3));
+    if (a8 > 0.1) { // Sesuaikan dengan min sumbu Y
+        ys.push({x: ahv, y: +a8.toFixed(3)});
+    }
   }
+
   return {
-    label, data:ys, _duty:duty, tension:0.25, pointRadius:0, spanGaps:true, borderWidth:2,
-    borderColor:color, backgroundColor:color+'33'
+    label, data:ys, _duty:duty, tension:0.4, pointRadius:0, spanGaps:true, 
+    borderWidth: 2.5,
+    borderColor:color, 
+    backgroundColor:color+'33'
   };
 }
 
@@ -681,8 +710,8 @@ function applyChartTheme(){
   chartWB.data.datasets[0].borderColor=[C.accent, C.breakGreen];
   chartWB.update('none');
 
-  chartA8.options.scales.x.title.color=C.muted; chartA8.options.scales.x.ticks.color=C.muted; chartA8.options.scales.x.grid.color=C.line;
-  chartA8.options.scales.y.title.color=C.muted; chartA8.options.scales.y.ticks.color=C.muted; chartA8.options.scales.y.grid.color=C.line;
+  chartA8.options.scales.x.title.color=C.muted; chartA8.options.scales.x.ticks.color=C.muted;
+  chartA8.options.scales.y.title.color=C.muted; chartA8.options.scales.y.ticks.color=C.muted;
   const L=T[lang];
   chartA8.options.plugins.annotation.annotations = {
     eavBand:{type:'box',yMin:2.5,yMax:5.0,backgroundColor:C.warn+'26',borderColor:C.warn+'4d',borderWidth:1},
@@ -716,7 +745,7 @@ function setLang(newLang){
 
   // legend & axis label
   if(chartWB){ chartWB.data.labels=[lang==='id'?'Kerja':'Work',lang==='id'?'Jeda':'Break']; chartWB.update('none'); }
-  if(chartA8){ chartA8.options.scales.x.title.text = (lang==='id'?'Durasi Shift (menit)':'Shift Duration (minutes)'); chartA8.update('none'); }
+  if(chartA8){ chartA8.options.scales.x.title.text = (lang==='id'?'aₕᵥ (m/s²) – RMS alat':'aₕᵥ (m/s²) – tool RMS'); chartA8.update('none'); }
 
   // toggle tombol bahasa
   const enBtn=document.getElementById('btnEN'), idBtn=document.getElementById('btnID');
@@ -785,13 +814,9 @@ function recalc(){
 
   // ----- AUTO SET DATASETS -----
   const C=Cfg();
-  const labels = Array.from({length: (720-60)/10+1}, (_,i)=>60+i*10);
-  chartA8.data.labels = labels;
-  const ds = [];
-  ds.push(buildCurveDataset(lang==='id'?'Kalkulasi':'Calculated', dutyTarget, C.ok));
-  ds.push(buildCurveDataset(lang==='id'?'Optimasi (5′)':'Optimized (5′)', lastOptimizedDuty, C.warn));
-  if(activeDuty!==null) ds.push(buildCurveDataset(lang==='id'?'Terpilih':'Selected', activeDuty, C.accent));
-  chartA8.data.datasets = ds;
+  const dutyForCurve = activeDuty !== null ? activeDuty : dutyTarget;
+  const curveLabel = lang === 'id' ? 'Kurva Risiko Aktif' : 'Active Risk Curve';
+  chartA8.data.datasets = [buildCurveDataset(curveLabel, dutyForCurve, C.accent)];
   chartA8.update('none');
 
   // HSE points untuk scenario "Selected" jika ada, else kalkulasi
@@ -804,8 +829,11 @@ function recalc(){
   const pp=document.getElementById('pointsPill'); pp.className=pcls; pp.textContent=ptxt;
 
   highlightRR(ahv, Tcur);
-  document.getElementById('dutyMode').textContent = (activeDuty===null? T[lang].mode.target : T[lang].mode.selected);
-  applyYAxis();
+  const dutyModeEl = document.getElementById('dutyMode');
+  if (dutyModeEl) {
+    dutyModeEl.textContent = (activeDuty===null? T[lang].mode.target : T[lang].mode.selected);
+  }
+  
   updateContextualHighlights(a8full);
   saveState();
 }
@@ -851,25 +879,12 @@ function highlightRR(a_now, T_now_h){
   }
 }
 
-/* --- Y axis --- */
-function applyYAxis(){
-  const yMan=document.getElementById('yManual'), yMinEl=document.getElementById('yMin'), yMaxEl=document.getElementById('yMax');
-  if(!chartA8||!yMan) return;
-  yMinEl.disabled=yMaxEl.disabled=!yMan.checked;
-  if(yMan.checked){
-    const ymin=parseFloat(yMinEl.value), ymax=parseFloat(yMaxEl.value);
-    if(isFinite(ymin)&&isFinite(ymax)&&ymax>ymin){ chartA8.options.scales.y.min=ymin; chartA8.options.scales.y.max=ymax; yAxisManual=true; yAxisMin=ymin; yAxisMax=ymax; }
-  }else{ chartA8.options.scales.y.min=0; chartA8.options.scales.y.max=undefined; yAxisManual=false; }
-  chartA8.update('none'); saveState();
-}
-
 /* --- share --- */
 function stateToQuery(){
   const s = saveState();
   const q = new URLSearchParams({
     ahv:String(s.ahv), targetA:String(s.targetA), shiftH:String(s.shiftH),
-    toolHours:String(s.toolHours), lang:s.lang, theme:s.theme, duty: s.activeDuty??'',
-    y:s.yAxisManual?'1':'0', ymin:String(s.yAxisMin??''), ymax:String(s.yAxisMax??'')
+    toolHours:String(s.toolHours), lang:s.lang, theme:s.theme, duty: s.activeDuty??''
   });
   return `${location.origin}${location.pathname}?${q.toString()}`
 }
@@ -879,8 +894,7 @@ function loadFromQuery(){
   const s = {
     ahv:+q.get('ahv'), targetA:+q.get('targetA'), shiftH:+q.get('shiftH'), toolHours:+q.get('toolHours'),
     lang:q.get('lang')||'en', theme:q.get('theme')||'light',
-    presets:[], activeDuty: q.get('duty')? +q.get('duty') : activeDuty,
-    yAxisManual: q.get('y')==='1', yAxisMin: +q.get('ymin')||0, yAxisMax: +q.get('ymax')||6
+    presets:[], activeDuty: q.get('duty')? +q.get('duty') : activeDuty
   };
   applyState(s);
 }
@@ -930,11 +944,7 @@ document.getElementById('btnCopy').addEventListener('click',async()=>{
 });
 document.getElementById('btnEN').addEventListener('click',()=>setLang('en'));
 document.getElementById('btnID').addEventListener('click',()=>setLang('id'));
-document.getElementById('yManual').addEventListener('change',applyYAxis);
-document.getElementById('btnApplyY').addEventListener('click',applyYAxis);
-['yMin','yMax'].forEach(id=>{
-  document.getElementById(id).addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); applyYAxis(); } });
-});
+
 const quick = document.getElementById('quickWork');
 const quickBadge = document.getElementById('quickBadge');
 const syncQuick = () => { const w=+quick.value; quickBadge.textContent = (lang==='id'?`${w}′ kerja + ${60-w}′ jeda`:`${w}′ work + ${60-w}′ break`); };
@@ -1006,9 +1016,3 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 </body>
 </html>
-
-
-
-
-
-
