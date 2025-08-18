@@ -837,8 +837,33 @@ function recalc(){
   const C=Cfg();
   const dutyForCurve = activeDuty !== null ? activeDuty : dutyTarget;
   const curveLabel = lang === 'id' ? 'Kurva Risiko Aktif' : 'Active Risk Curve';
-  chartA8.data.datasets = [buildCurveDataset(curveLabel, dutyForCurve, C.accent)];
-  chartA8.update('none');
+  
+  const mainCurve = buildCurveDataset(curveLabel, dutyForCurve, C.accent);
+  const point_a8 = ahv * Math.sqrt((dutyForCurve * shiftH) / 8);
+
+  const pointDataset = {
+      label: 'Current Input',
+      data: [{x: ahv, y: point_a8}],
+      pointBackgroundColor: C.bad,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      type: 'scatter',
+      showLine: false
+  };
+
+  chartA8.data.datasets = [mainCurve, pointDataset];
+  chartA8.update('none'); // Update chart without animation
+
+  // REVISI: Aktifkan tooltip secara otomatis
+  setTimeout(() => {
+      if (chartA8.tooltip) {
+          chartA8.tooltip.setActiveElements([
+              { datasetIndex: 1, index: 0 }
+          ]);
+          chartA8.update();
+      }
+  }, 100);
+
 
   // HSE points untuk scenario "Selected" jika ada, else kalkulasi
   const dutyForPts = (activeDuty!==null)?activeDuty:dutyTarget;
