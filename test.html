@@ -1012,6 +1012,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   chartWB.data.datasets[0].data=[w,b]; chartWB.update('none');
   document.getElementById('btnEN').classList.add('active'); document.getElementById('btnEN').setAttribute('aria-pressed','true');
   syncQuick();
+  
+  // REVISI: Tambahkan event listener untuk kalkulasi otomatis
+  ['ahv', 'targetA', 'shiftH', 'toolHours'].forEach(id => {
+    document.getElementById(id).addEventListener('input', recalc);
+  });
+  
   recalc();
 });
 </script>
