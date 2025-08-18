@@ -56,39 +56,40 @@
     --rr-ok:#163a23; --rr-warn:#3a2f13; --rr-bad:#3a1515;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
+  html{font-size: 15px;} /* REVISI: Ukuran font dasar sedikit diperkecil */
   body{margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2));line-height:1.5}
   header{padding:24px 16px 6px;text-align:center}
-  header h1 { margin: 0 0 6px; font-weight: 700; letter-spacing: .2px; font-size: clamp(1.2rem, 4.5vw, 2.4rem); /* responsif */ }
+  header h1 { margin: 0 0 6px; font-weight: 700; letter-spacing: .2px; font-size: clamp(1.2rem, 4.5vw, 2.2rem); }
   header p{margin:0;color:var(--muted)}
   .brandbar{display:flex;justify-content:center;margin:8px 0 4px}
   .brandbar img{max-height:42px; width:auto; object-fit:contain}
 
-  .wrap{max-width:1100px;margin:16px auto 42px;padding:0 16px}
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:8px 0 16px}
-  .btn{cursor:pointer;padding:10px 14px;border-radius:12px;border:1px solid color-mix(in oklab, var(--ink) 15%, transparent);background:color-mix(in oklab, var(--card) 92%, black 8%);color:var(--ink); min-height:44px}
+  .wrap{max-width:1100px;margin:16px auto 42px;padding:0 16px; overflow-x: hidden;} /* REVISI: Mencegah overflow horizontal */
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0 16px}
+  .btn{cursor:pointer;padding:8px 12px;border-radius:10px;border:1px solid color-mix(in oklab, var(--ink) 15%, transparent);background:color-mix(in oklab, var(--card) 92%, black 8%);color:var(--ink); min-height:40px; font-size: 0.9rem;} /* REVISI: Ukuran tombol diperkecil */
   .btn:hover{border-color:var(--accent)}
   .btn:focus-visible{outline:none; box-shadow:0 0 0 3px var(--focus)}
   .btn.secondary{background:transparent}
   .btn.icon{display:inline-flex;align-items:center;gap:8px}
-  .btn.small{padding:6px 10px; min-height:36px}
+  .btn.small{padding:5px 9px; min-height:32px; font-size: 0.85rem;}
 
   .langbtns{display:flex;gap:8px;align-items:center}
   .langbtn{
     border:1px solid color-mix(in oklab, var(--ink) 15%, transparent);
     background:var(--card); border-radius:999px; padding:4px 8px;
-    display:inline-flex; align-items:center; gap:8px; cursor:pointer; min-height:44px
+    display:inline-flex; align-items:center; gap:8px; cursor:pointer; min-height:40px
   }
-  .langbtn img{width:28px;height:20px;object-fit:cover;border-radius:3px}
+  .langbtn img{width:26px;height:18px;object-fit:cover;border-radius:3px}
   .langbtn.active{outline:2px solid var(--accent); outline-offset:2px}
+  [data-theme="dark"] .langbtn span { color: var(--ink); } /* REVISI: Warna teks tombol bahasa di dark mode */
 
-  .card{background:linear-gradient(180deg,var(--card),color-mix(in oklab, var(--card) 90%, black 10%));border:1px solid color-mix(in oklab, var(--ink) 10%, transparent);border-radius:var(--br); padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.12); margin-bottom:14px}
+  .card{background:linear-gradient(180deg,var(--card),color-mix(in oklab, var(--card) 90%, black 10%));border:1px solid color-mix(in oklab, var(--ink) 10%, transparent);border-radius:var(--br); padding:16px;box-shadow:0 8px 24px rgba(0,0,0,.12); margin-bottom:14px}
   .grid{display:grid;gap:14px}
   @media(min-width:980px){ .grid{grid-template-columns:1.05fr 1.15fr}}
   label{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
   input[type=number]{width:100%;padding:10px 12px;background:var(--card);border:1px solid color-mix(in oklab, var(--ink) 18%, transparent);color:var(--ink);border-radius:12px;outline:none}
   input[type=number]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--focus)}
-  .row{display:grid;gap:12px;grid-template-columns:repeat(4,1fr)}
+  .row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));} /* REVISI: Grid lebih fleksibel */
   @media(max-width:720px){ .row{grid-template-columns:1fr}}
   .hint{font-size:12px;color:var(--muted)}
   .stat{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:color-mix(in oklab, var(--card) 92%, black 8%);border:1px solid var(--line);border-radius:12px;margin:8px 0}
@@ -101,8 +102,9 @@
   h3{margin:8px 0 6px}
   ul{margin:8px 0 0 18px}
 
+  .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; } /* REVISI: Membuat tabel bisa di-scroll horizontal */
   table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:12px;margin-top:8px}
-  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line); font-size: 0.85rem;} /* REVISI: Font tabel diperkecil */
   th{font-weight:600;color:var(--muted);background:color-mix(in oklab, var(--card) 85%, black 15%);position:sticky;top:0}
   tr:last-child td{border-bottom:none}
   #schedTable tbody tr{cursor:pointer}
@@ -136,6 +138,15 @@
   footer{max-width:1100px;margin:20px auto 60px;color:var(--muted);text-align:center;padding:0 16px}
   footer a{color:var(--accent);text-decoration:none}
   footer a:hover{text-decoration:underline}
+  
+  /* Validation Message Style */
+  #ahv-validation-msg {
+    color: var(--bad);
+    font-size: 12px;
+    margin-top: 4px;
+    display: none; /* Hidden by default */
+  }
+
   @media print{
     *{background:transparent !important;color:#000 !important;box-shadow:none !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     body{background:#fff !important}
@@ -158,6 +169,7 @@
   <button class="btn icon" id="btnPrint" title="Print/Save PDF">🖨️ <span>Print PDF</span></button>
   <button class="btn icon secondary" id="btnTheme" title="Toggle theme">🌓 <span id="themeLabel">Light</span></button>
   <button class="btn icon secondary" id="btnCopy" title="Copy configuration link">🔗 <span>Copy Link</span></button>
+  <button class="btn icon secondary" id="btnResetAll" title="Reset all inputs and selections">🔄 <span>Reset</span></button> <!-- REVISI: Tombol Reset -->
 
   <span class="vsep" aria-hidden="true"></span>
 
@@ -178,8 +190,9 @@
     <div>
       <h2 id="t_inputs">Inputs</h2>
       <label for="ahv" id="t_ahvlabel">aₕᵥ (m/s²) – tool RMS</label>
-      <input id="ahv" type="number" step="0.01" min="0" value="2.50" />
+      <input id="ahv" type="number" step="0.01" min="2.5" max="18" value="2.50" />
       <div class="hint" id="t_ahvhint">Example: 2.50 m/s² (A(8) equals 2.5 if used for full 8 h)</div>
+      <div id="ahv-validation-msg"></div> <!-- REVISI: Placeholder untuk pesan validasi -->
 
       <div class="row" style="margin-top:10px">
         <div>
@@ -197,11 +210,7 @@
           <input id="toolHours" type="number" step="0.25" min="0" value="8" />
           <div class="hint" id="t_toolhhint">For minimum operators (rotation)</div>
         </div>
-        <div style="display:flex;align-items:end;gap:8px;flex-wrap:wrap">
-          <button class="btn" id="btnCalc">Calculate</button>
-          <button class="btn secondary" id="btnOptimize">Optimize Duty</button>
-          <button class="btn secondary" id="btnResetSel" title="Reset selected duty">Reset Selection</button>
-        </div>
+        <!-- REVISI: Tombol Calculate dan Optimize dihapus -->
       </div>
 
       <div class="stat" aria-live="polite">
@@ -244,19 +253,21 @@
         <button class="btn small" id="btnAddPreset">+ Custom Preset</button>
       </div>
 
-      <table id="schedTable" aria-label="Per-hour scheme table">
-        <thead>
-          <tr>
-            <th id="t_colScheme">Per-hour scheme</th>
-            <th>Duty</th>
-            <th id="t_colT">T (h/day)</th>
-            <th>A(8) (m/s²)</th>
-            <th id="t_colStatus">Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="table-responsive"> <!-- REVISI: Wrapper untuk tabel -->
+        <table id="schedTable" aria-label="Per-hour scheme table">
+          <thead>
+            <tr>
+              <th id="t_colScheme">Per-hour scheme</th>
+              <th>Duty</th>
+              <th id="t_colT">T (h/day)</th>
+              <th>A(8) (m/s²)</th>
+              <th id="t_colStatus">Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
       <div class="small" style="margin-top:6px" id="t_dutydef">Duty = work minutes per hour / 60. Effective T = duty × shift (≤ shift). A(8)=aₕᵥ·√(T/8).</div>
     </div>
@@ -270,7 +281,6 @@
     <div>
       <h3 id="t_chart2title">Risk Analysis vs Shift Duration</h3>
       <div class="chartbox"><canvas id="chartA8"></canvas></div>
-      <!-- REMOVED: Manual Y-axis controls are no longer needed -->
       <div class="small" id="t_chart2hint">Curves auto-generated from Calculated, Optimized (5-min step), and Selected duties.</div>
     </div>
   </div>
@@ -348,17 +358,17 @@
   .vt-supplement .literature-section li{overflow-wrap:break-word;word-wrap:break-word}
   .vt-supplement .literature-section a{color:#008080;text-decoration:none}
   .vt-supplement .literature-section a:hover{text-decoration:underline}
-  @media (prefers-color-scheme: dark){
-    [data-theme="dark"] .vt-supplement .table-container,
-    [data-theme="dark"] .vt-supplement .literature-section{background:color-mix(in oklab, var(--card) 96%, black 4%)}
-    [data-theme="dark"] .vt-supplement #vibrationTable thead th{background-color:#0b7a7a}
-    [data-theme="dark"] .vt-supplement #vibrationTable td,
-    [data-theme="dark"] .vt-supplement #vibrationTable th{border-color:var(--line);color:var(--ink)}
-    [data-theme="dark"] .vt-supplement #vibrationTable tbody tr:hover{background:color-mix(in oklab, var(--accent) 12%, transparent)}
-  }
-  @media print{
-    .vt-supplement .table-container,.vt-supplement .literature-section{box-shadow:none}
-  }
+  [data-theme="dark"] .vt-supplement .table-container,
+  [data-theme="dark"] .vt-supplement .literature-section,
+  [data-theme="dark"] .vt-supplement #vibrationTable {background:color-mix(in oklab, var(--card) 96%, black 4%)}
+  [data-theme="dark"] .vt-supplement #vibrationTable caption,
+  [data-theme="dark"] .vt-supplement .literature-section,
+  [data-theme="dark"] .vt-supplement .literature-section h3,
+  [data-theme="dark"] .vt-supplement .literature-section a { color: var(--ink); } /* REVISI: Warna font dark mode */
+  [data-theme="dark"] .vt-supplement #vibrationTable thead th{background-color:#0b7a7a}
+  [data-theme="dark"] .vt-supplement #vibrationTable td,
+  [data-theme="dark"] .vt-supplement #vibrationTable th{border-color:var(--line);color:var(--ink)}
+  [data-theme="dark"] .vt-supplement #vibrationTable tbody tr:hover{background:color-mix(in oklab, var(--accent) 12%, transparent)}
 </style>
 <div class="vt-supplement">
   <div class="table-container">
@@ -547,7 +557,10 @@ const defaultPresets=[
   {work:50,break:10,labelID:"50′ kerja + 10′ jeda",labelEN:"50′ work + 10′ break"},
   {work:45,break:15,labelID:"45′ kerja + 15′ jeda",labelEN:"45′ work + 15′ break"},
   {work:30,break:30,labelID:"30′ kerja + 30′ jeda",labelEN:"30′ work + 30′ break"},
-  {work:20,break:40,labelID:"20′ kerja + 40′ jeda",labelEN:"20′ work + 40′ break"}
+  {work:20,break:40,labelID:"20′ kerja + 40′ jeda",labelEN:"20′ work + 40′ break"},
+  {work:15,break:45,labelID:"15′ kerja + 45′ jeda",labelEN:"15′ work + 45′ break"}, // REVISI: Preset baru
+  {work:10,break:50,labelID:"10′ kerja + 50′ jeda",labelEN:"10′ work + 50′ break"}, // REVISI: Preset baru
+  {work:5,break:55,labelID:"5′ kerja + 55′ jeda",labelEN:"5′ work + 55′ break"}   // REVISI: Preset baru
 ];
 let customPresets=[];
 let chartWB, chartA8;
@@ -642,11 +655,11 @@ function buildCharts(){
           max: 20, 
           grid:{
             color: (ctx) => (ctx.tick.major ? Cfg().line : Cfg().lineMinor),
-            lineWidth: (ctx) => (ctx.tick.major ? 1.2 : 0.6), // REVISI: Ketebalan garis
+            lineWidth: (ctx) => (ctx.tick.major ? 1.5 : 0.7), 
           },
           ticks:{
             color: C.muted,
-            stepSize: 5 // REVISI: Atur interval angka major
+            stepSize: 5 
           }
         },
         y:{
@@ -656,7 +669,7 @@ function buildCharts(){
           max: 20, 
           grid:{
             color: (ctx) => (ctx.tick.major ? Cfg().line : Cfg().lineMinor),
-            lineWidth: (ctx) => (ctx.tick.major ? 1.2 : 0.6), // REVISI: Ketebalan garis
+            lineWidth: (ctx) => (ctx.tick.major ? 1.5 : 0.7),
           },
           ticks:{
             color: C.muted,
@@ -664,7 +677,7 @@ function buildCharts(){
               if ([0.1, 1, 5, 10, 20].includes(value)) {
                 return value.toString();
               }
-              if (value === 2.5) return '2.5'; // Pastikan 2.5 selalu ada
+              if (value === 2.5) return '2.5';
             }
           }
         }
@@ -684,9 +697,9 @@ function buildCurveDataset(label, duty, color){
   const ys=[];
   const x_max = 20;
   
-  for(let ahv = 0; ahv <= x_max; ahv += 0.1) { // REVISI: Titik data lebih rapat untuk kurva lebih halus
+  for(let ahv = 0; ahv <= x_max; ahv += 0.1) {
     const a8 = ahv*Math.sqrt(T/8);
-    if (a8 > 0.1) { // Sesuaikan dengan min sumbu Y
+    if (a8 >= 0.1) { 
         ys.push({x: ahv, y: +a8.toFixed(3)});
     }
   }
@@ -764,8 +777,20 @@ function updateContextualHighlights(a8){
 
 /* Recalc & AUTO plotting (Calculated, Optimized, Selected) */
 function recalc(){
-  const ahv=parseFloat(document.getElementById('ahv').value),
-        targetA=parseFloat(document.getElementById('targetA').value)||2.5,
+  const ahvInput = document.getElementById('ahv');
+  const ahv = parseFloat(ahvInput.value);
+  const validationMsg = document.getElementById('ahv-validation-msg');
+
+  // REVISI: Validasi input ahv
+  if (ahv < 2.5 || ahv > 18) {
+    validationMsg.textContent = lang === 'id' ? 'Rentang pengisian: 2.5 - 18 m/s².' : 'Input range: 2.5 - 18 m/s².';
+    validationMsg.style.display = 'block';
+    return; // Stop calculation
+  } else {
+    validationMsg.style.display = 'none';
+  }
+
+  const targetA=parseFloat(document.getElementById('targetA').value)||2.5,
         shiftH=parseFloat(document.getElementById('shiftH').value),
         toolHours=parseFloat(document.getElementById('toolHours').value);
 
@@ -813,8 +838,33 @@ function recalc(){
   const C=Cfg();
   const dutyForCurve = activeDuty !== null ? activeDuty : dutyTarget;
   const curveLabel = lang === 'id' ? 'Kurva Risiko Aktif' : 'Active Risk Curve';
-  chartA8.data.datasets = [buildCurveDataset(curveLabel, dutyForCurve, C.accent)];
-  chartA8.update('none');
+  
+  const mainCurve = buildCurveDataset(curveLabel, dutyForCurve, C.accent);
+  const point_a8 = ahv * Math.sqrt((dutyForCurve * shiftH) / 8);
+
+  const pointDataset = {
+      label: 'Current Input',
+      data: [{x: ahv, y: point_a8}],
+      pointBackgroundColor: C.bad,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      type: 'scatter',
+      showLine: false
+  };
+
+  chartA8.data.datasets = [mainCurve, pointDataset];
+  chartA8.update('none'); // Update chart without animation
+
+  // REVISI: Aktifkan tooltip secara otomatis
+  setTimeout(() => {
+      if (chartA8.tooltip) {
+          chartA8.tooltip.setActiveElements([
+              { datasetIndex: 1, index: 0 }
+          ]);
+          chartA8.update();
+      }
+  }, 100);
+
 
   // HSE points untuk scenario "Selected" jika ada, else kalkulasi
   const dutyForPts = (activeDuty!==null)?activeDuty:dutyTarget;
@@ -919,7 +969,7 @@ document.querySelector('#schedTable tbody').addEventListener('click',e=>{
   }
 });
 document.getElementById('btnPrint').addEventListener('click',()=>window.print());
-document.getElementById('btnCalc').addEventListener('click',recalc);
+
 document.getElementById('btnAddPreset').addEventListener('click',()=>{
   const w=prompt(lang==='id'?'Menit kerja per jam (0–60)':'Work minutes per hour (0–60)','45'),
         b=prompt(lang==='id'?'Menit jeda per jam (0–60)':'Break minutes per hour (0–60)','15');
@@ -928,11 +978,7 @@ document.getElementById('btnAddPreset').addEventListener('click',()=>{
   if(wi+bi===0){alert(lang==='id'?'Tidak valid':'Invalid');return}
   customPresets.push({work:wi,break:bi}); activeDuty = wi/60; recalc();
 });
-document.getElementById('btnOptimize').addEventListener('click', ()=>{
-  // hanya memicu recalculation; lastOptimizedDuty dihitung di recalc
-  recalc();
-});
-document.getElementById('btnResetSel').addEventListener('click',()=>{activeDuty=null; recalc()});
+
 document.getElementById('btnTheme').addEventListener('click',()=>{ setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); });
 document.getElementById('btnCopy').addEventListener('click',async()=>{
   const url = stateToQuery();
@@ -966,6 +1012,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   chartWB.data.datasets[0].data=[w,b]; chartWB.update('none');
   document.getElementById('btnEN').classList.add('active'); document.getElementById('btnEN').setAttribute('aria-pressed','true');
   syncQuick();
+  
+  // REVISI: Tambahkan event listener untuk kalkulasi otomatis
+  ['ahv', 'targetA', 'shiftH', 'toolHours'].forEach(id => {
+    document.getElementById(id).addEventListener('input', recalc);
+  });
+  
   recalc();
 });
 </script>
