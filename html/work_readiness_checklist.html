@@ -117,10 +117,10 @@
             }
         }
 
-        /* Gaya khusus untuk mencetak */
+        /* [PERUBAHAN] Gaya khusus untuk mencetak */
         @media print {
             @page {
-                size: A4;
+                size: A4 portrait;
                 margin: 0.5cm; /* Margin super minimal */
             }
             body {
@@ -128,7 +128,8 @@
                 print-color-adjust: exact !important;
                 padding: 0;
                 margin: 0;
-                font-size: 8pt; /* Perkecil lagi font dasar */
+                font-size: 7pt; /* Perkecil lagi font dasar */
+                line-height: 1.2; /* Perkecil jarak antar baris */
             }
             /* Sembunyikan tombol print, notifikasi, dan tombol clear saat mencetak */
             #print-button-container, #toast-alert, .clear-signature-btn, footer {
@@ -163,24 +164,27 @@
             }
             /* Perkecil padding dan font di dalam tabel */
             th, td {
-                padding: 0.1rem 0.3rem !important;
-                font-size: 7pt !important;
+                padding: 0.05rem 0.2rem !important;
+                font-size: 6.5pt !important;
             }
             h1 {
-                font-size: 14pt !important;
-                margin-bottom: 0.25rem !important;
+                font-size: 12pt !important;
+                margin-bottom: 0.15rem !important;
             }
             p, label, input {
-                font-size: 7pt !important;
+                font-size: 6.5pt !important;
             }
             input[type="text"] {
-                padding: 0.15rem;
+                padding: 0.1rem;
             }
             .mt-12 { margin-top: 1rem !important; }
             .mt-4 { margin-top: 0.2rem !important; }
             .mb-4 { margin-bottom: 0.4rem !important; }
             .gap-12 { gap: 1.5rem !important; }
             .h-8 { height: 1.5rem !important; }
+            .signature-canvas {
+                height: 80px !important;
+            }
         }
     </style>
 </head>
