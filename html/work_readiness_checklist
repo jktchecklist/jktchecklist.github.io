@@ -1,0 +1,498 @@
+<!-- Copyright (c) 2025 Mokhamad Abrar. All Rights Reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Readiness Checklist</title>
+    <!-- Meta Description -->
+    <meta id="meta-description" name="description" content="">
+    <!-- [PENAMBAHAN] Favicon Links -->
+    <link rel="icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.png" type="image/png" sizes="16x16">
+    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/jktchecklist/jktchecklist.github.io/refs/heads/main/assets/images/logos/favicon.png">
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Flatpickr CSS & JS untuk kalender -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        /* Copyright (c) 2025 Mokhamad Abrar. All Rights Reserved. */
+
+        /* Menambahkan beberapa gaya kustom untuk tampilan yang lebih baik */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .table-header-group {
+            background-color: #f3f4f6;
+        }
+        .section-header { background-color: #e5e7eb; }
+        .section-header-green { background-color: #d1fae5; }
+        .section-header-blue { background-color: #dbeafe; }
+        .section-header-orange { background-color: #ffedd5; }
+        .section-header-purple { background-color: #e9d5ff; }
+        .section-header-pink { background-color: #fce7f3; }
+        table, th, td {
+            border: 1px solid #d1d5db;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+        input[type="checkbox"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        /* Gaya untuk input yang tidak aktif */
+        input[readonly] {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+        }
+        /* Gaya untuk Modal Pop-up */
+        #remarksModal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+        /* Gaya untuk notifikasi/toast */
+        #toast-alert {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        /* Gaya untuk canvas tanda tangan */
+        .signature-canvas {
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        /* Gaya khusus untuk seluler */
+        @media (max-width: 767px) {
+            body {
+                font-size: 12px;
+                padding: 0.5rem;
+            }
+            .main-container {
+                padding: 1rem;
+            }
+            th, td {
+                padding: 0.25rem 0.5rem;
+                font-size: 11px;
+            }
+            h1 {
+                font-size: 1.25rem; /* 20px */
+            }
+            .text-gray-600 {
+                font-size: 0.8rem;
+            }
+            label {
+                font-size: 0.8rem;
+            }
+            input[type="text"] {
+                padding: 0.4rem;
+                font-size: 0.8rem;
+            }
+            .signature-canvas {
+                width: 100%; /* Make canvas responsive */
+                height: 80px; /* Adjust height for mobile */
+            }
+            .gap-12 {
+                gap: 1.5rem;
+            }
+            .mt-12 {
+                margin-top: 2rem;
+            }
+        }
+
+        /* Gaya khusus untuk mencetak */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0.5cm; /* Margin super minimal */
+            }
+            body {
+                -webkit-print-color-adjust: exact !important; /* Memastikan warna latar belakang ikut tercetak */
+                print-color-adjust: exact !important;
+                padding: 0;
+                margin: 0;
+                font-size: 8pt; /* Perkecil lagi font dasar */
+            }
+            /* Sembunyikan tombol print, notifikasi, dan tombol clear saat mencetak */
+            #print-button-container, #toast-alert, .clear-signature-btn, footer {
+                display: none !important;
+            }
+            /* Atur agar konten utama memenuhi halaman */
+            .main-container {
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            /* Paksa tata letak menyamping saat print */
+            .print-row {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: flex-end !important;
+                gap: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .print-row > div {
+                margin: 0 !important;
+            }
+            /* Atur lebar kolom saat print */
+            .print-row > div:nth-child(1),
+            .print-row > div:nth-child(2) {
+                flex: 1 1 40%; 
+            }
+            .print-row > div:nth-child(3) {
+                flex: 0 1 20%; 
+            }
+            /* Perkecil padding dan font di dalam tabel */
+            th, td {
+                padding: 0.1rem 0.3rem !important;
+                font-size: 7pt !important;
+            }
+            h1 {
+                font-size: 14pt !important;
+                margin-bottom: 0.25rem !important;
+            }
+            p, label, input {
+                font-size: 7pt !important;
+            }
+            input[type="text"] {
+                padding: 0.15rem;
+            }
+            .mt-12 { margin-top: 1rem !important; }
+            .mt-4 { margin-top: 0.2rem !important; }
+            .mb-4 { margin-bottom: 0.4rem !important; }
+            .gap-12 { gap: 1.5rem !important; }
+            .h-8 { height: 1.5rem !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-6 md:p-8">
+
+    <!-- Elemen untuk notifikasi/toast -->
+    <div id="toast-alert" class="fixed top-0 right-0 mt-5 mr-5 bg-red-500 text-white py-2 px-4 rounded-lg shadow-md transform translate-x-[120%] opacity-0" data-lang-key="toast_text">
+        Hanya maksimal 26 karakter.
+    </div>
+
+    <!-- Tombol Aksi -->
+    <div id="print-button-container" class="max-w-7xl mx-auto flex justify-end items-center space-x-2 mb-4">
+        <!-- Tombol Bahasa -->
+        <button id="lang-en" class="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" title="English">
+            <img src="https://raw.githubusercontent.com/simcalc/simcalc.github.io/refs/heads/main/img/EN.svg" alt="EN" class="h-6 w-6">
+        </button>
+        <button id="lang-id" class="p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" title="Indonesia">
+             <img src="https://raw.githubusercontent.com/simcalc/simcalc.github.io/refs/heads/main/img/ID.svg" alt="ID" class="h-6 w-6 border border-black rounded-full" style="border-width: 1px;">
+        </button>
+        <!-- Tombol Print -->
+        <button id="printButton" class="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" title="Print to PDF">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="max-w-7xl mx-auto bg-white p-8 rounded-lg shadow-lg main-container">
+
+        <!-- Header Utama -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+            <div class="order-2 md:order-1 text-center md:text-left">
+                <h1 class="text-2xl font-bold text-gray-800" data-lang-key="title"></h1>
+                <p class="text-gray-600" data-lang-key="subtitle"></p>
+            </div>
+            <div class="order-1 md:order-2 mb-4 md:mb-0">
+                <img src="https://raw.githubusercontent.com/simcalc/simcalc.github.io/refs/heads/main/img/Logo-JO.webp" 
+                     alt="Company Logo" 
+                     style="width: 5cm; height: auto;"
+                     onerror="this.onerror=null;this.src='https://placehold.co/189x100/ccc/ffffff?text=Logo';">
+            </div>
+        </div>
+
+        <!-- Informasi Kontraktor dan Pekerjaan -->
+        <div class="flex flex-col md:flex-row md:items-end md:space-x-6 space-y-4 md:space-y-0 mb-6 print-row">
+            <div class="flex-1 min-w-0">
+                <label for="contractor" class="font-semibold text-gray-700" data-lang-key="contractor"></label>
+                <input type="text" id="contractor" class="mt-1 p-2 border rounded-md w-full">
+            </div>
+            <div class="flex-1 min-w-0">
+                <label for="work-location" class="font-semibold text-gray-700" data-lang-key="work_location"></label>
+                <input type="text" id="work-location" class="mt-1 p-2 border rounded-md w-full">
+            </div>
+            <div>
+                <label for="work-on" class="font-semibold text-gray-700" data-lang-key="for_work_on"></label>
+                <input type="text" id="work-on" class="mt-1 p-2 border rounded-md w-full md:w-64">
+            </div>
+        </div>
+
+        <!-- Tabel Checklist -->
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead class="table-header-group">
+                    <tr>
+                        <th class="w-1/2" data-lang-key="th_description"></th>
+                        <th class="text-center" data-lang-key="th_yes"></th>
+                        <th class="text-center" data-lang-key="th_no"></th>
+                        <th class="text-center" data-lang-key="th_na"></th>
+                        <th class="w-1/4" data-lang-key="th_remarks"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Bagian 1: Work Area Conditions -->
+                    <tr class="section-header-blue">
+                        <td colspan="5" class="font-bold" data-lang-key="s1_title"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s1_1"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row1"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row1" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row1"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s1_2"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row2"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row2" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row2"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s1_3"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row3"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row3" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row3"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s1_4"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row4"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row4" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row4"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+
+                    <!-- Bagian 2: Tools & Equipment -->
+                    <tr class="section-header-orange">
+                        <td colspan="5" class="font-bold" data-lang-key="s2_title"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s2_1"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row5"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row5" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row5"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s2_2"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row6"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row6" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row6"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s2_3"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row7"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row7" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row7"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s2_4"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row8"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row8" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row8"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    
+                    <!-- Bagian 3: Material -->
+                    <tr class="section-header-green">
+                        <td colspan="5" class="font-bold" data-lang-key="s3_title"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s3_1"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row9"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row9" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row9"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s3_2"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row10"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row10" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row10"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s3_3"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row11"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row11" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row11"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+
+                    <!-- Bagian 4: Safety -->
+                    <tr class="section-header">
+                        <td colspan="5" class="font-bold" data-lang-key="s4_title"></td>
+                    </tr>
+                     <tr>
+                        <td data-lang-key="s4_1"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row12"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row12" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row12"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                     <tr>
+                        <td data-lang-key="s4_2"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row13"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row13" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row13"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                     <tr>
+                        <td data-lang-key="s4_3"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row14"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row14" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row14"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                     <tr>
+                        <td data-lang-key="s4_4"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row15"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row15" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row15"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                     <tr>
+                        <td data-lang-key="s4_5"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row16"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row16" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row16"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+
+                    <!-- Bagian 5: Workforce -->
+                    <tr class="section-header-purple">
+                        <td colspan="5" class="font-bold" data-lang-key="s5_title"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s5_1"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row17"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row17" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row17"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s5_2"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row18"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row18" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row18"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+
+                    <!-- Bagian 6: Documentation -->
+                    <tr class="section-header-pink">
+                        <td colspan="5" class="font-bold" data-lang-key="s6_title"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s6_1"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row19"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row19" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row19"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                    <tr>
+                        <td data-lang-key="s6_2"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row20"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row20" data-is-no="true"></td>
+                        <td class="text-center"><input type="checkbox" data-group="row20"></td>
+                        <td><input type="text" readonly maxlength="26"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Bagian Tanda Tangan -->
+        <div class="mt-12 pt-8 border-t">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Prepared By Section -->
+                <div>
+                    <p class="mb-4 font-semibold text-gray-700" data-lang-key="prepared_by"></p>
+                    <div class="flex items-center">
+                        <div class="w-full">
+                            <canvas id="signature-prepared" class="signature-canvas" width="265" height="113"></canvas>
+                            <button id="clear-prepared" class="clear-signature-btn text-xs text-red-500 hover:text-red-700 mt-1" data-lang-key="clear"></button>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4">
+                        <input type="text" data-lang-key="name_placeholder" class="p-2 border rounded-md w-full text-sm" title="Name">
+                        <input type="text" data-lang-key="designation_placeholder" class="p-2 border rounded-md w-full text-sm" title="Designation">
+                    </div>
+                </div>
+                <!-- Verified By Section -->
+                <div>
+                    <p class="mb-4 font-semibold text-gray-700" data-lang-key="verified_by"></p>
+                    <div class="flex items-center">
+                        <div class="w-full">
+                            <canvas id="signature-verified" class="signature-canvas" width="265" height="113"></canvas>
+                            <button id="clear-verified" class="clear-signature-btn text-xs text-red-500 hover:text-red-700 mt-1" data-lang-key="clear"></button>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4">
+                        <input type="text" data-lang-key="name_placeholder" class="p-2 border rounded-md w-full text-sm" title="Name">
+                        <input type="text" data-lang-key="designation_placeholder" class="p-2 border rounded-md w-full text-sm" title="Designation">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer Hak Cipta -->
+        <footer class="mt-12 pt-6 border-t text-center text-sm text-gray-500">
+            <p>
+                <span data-lang-key="footer_copyright"></span>
+                <a href="https://id.linkedin.com/in/mokhamadabrar" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">
+                    Mokhamad Abrar
+                </a>
+                <span data-lang-key="footer_rights"></span>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modal Pop-up untuk Remarks -->
+    <div id="remarksModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 modal-content scale-95">
+            <h3 id="modalTitle" class="text-lg font-semibold text-gray-800 mb-4" data-lang-key="modal_title"></h3>
+            <p id="modalDescription" class="text-sm text-gray-600 mb-4" data-lang-key="modal_desc"></p>
+            <div id="modalInputArea">
+                <textarea id="modalTextarea" class="w-full p-2 border rounded-md h-28" data-lang-key="modal_placeholder" maxlength="26"></textarea>
+                <p id="modalError" class="text-red-500 text-sm mt-1 hidden" data-lang-key="modal_error"></p>
+                <p id="modalCharCounter" class="text-sm text-gray-500 text-right mt-1">0 / 26</p>
+            </div>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button id="cancelModal" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300" data-lang-key="modal_cancel"></button>
+                <button id="saveModal" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" data-lang-key="modal_save"></button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        /* Copyright (c) 2025 Mokhamad Abrar. All Rights Reserved. */
+        const _a={en:{title:"Work Readiness Checklist",subtitle:"(Preparation for Work Start Next Day)",contractor:"Contractor:",work_location:"Work Location:",for_work_on:"For work on:",th_description:"Description",th_yes:"Yes",th_no:"No",th_na:"NA",th_remarks:"Remarks",s1_title:"1. Work Area Conditions",s1_1:"1.1 Work areas are cleared of waste, debris and unused material?",s1_2:"1.2 Walkway to the work area is free from obstruction(s)?",s1_3:"1.3 Barricades / Exclusion zone erected?",s1_4:"1.4 Adequate lights provide at work area?",s2_title:"2. Tools & Equipment",s2_1:"2.1 Tool inspected, cleaned and ready to use?",s2_2:"2.2 Heavy machinery inspected, maintainance done and ready to use?",s2_3:"2.3 Lockout / Tagout in-placed?",s2_4:"2.4 Lifting gears and accessories inspected and tagged?",s3_title:"3. Material",s3_1:"3.1 Materials for next day prepared and staged at work area?",s3_2:"3.2 Hazardous materials stored safely with secondary containment and labeled?",s3_3:"3.3 Inventory checked to avoid shortages / delays?",s4_title:"4. Safety",s4_1:"4.1 Documents prepared for PTW to be applied next day?",s4_2:"4.2 Safety signs and barricades in-place and visible?",s4_3:"4.3 Fire extinguishers, spill kits and first aid boxes available and accessible?",s4_4:"4.4 MSRA briefed to the workforce and they know what is the hazard and risk involved in the work?",s4_5:"4.5 PPE available and checked?",s5_title:"5. Workforce",s5_1:"5.1 Next day manpower plan confirmed?",s5_2:"5.2 Competent persons like riggers, flagman, safety officer available?",s6_title:"6. Documentation",s6_1:"6.1 Safety notice board prepared and display at the work area?",s6_2:"6.2 Latest drawings, MSRA and checklist prepared to display on the notice board?",prepared_by:"Prepared By:",verified_by:"Verified By:",signature:"Signature:",clear:"Clear",name_placeholder:"Name",designation_placeholder:"Designation",modal_title:"What the reason?",modal_desc:"descrip on remark box",modal_placeholder:"Write your reason here...",modal_error:"Reason cannot be empty.",modal_cancel:"Cancel",modal_save:"Save",toast_text:"Only max 26 characters.",weekdays:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],months:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],footer_copyright:"Copyright (c) 2025 ",footer_rights:"",meta_description:"Building a brighter future for the nation! Our innovative Work Readiness Checklist fosters the enlightenment and sustainable intellectual development of future generations."},id:{title:"Daftar Periksa Kesiapan Kerja",subtitle:"(Persiapan untuk Memulai Pekerjaan Hari Berikutnya)",contractor:"Kontraktor:",work_location:"Lokasi Kerja:",for_work_on:"Untuk pekerjaan pada:",th_description:"Deskripsi",th_yes:"Ya",th_no:"Tidak",th_na:"T/A",th_remarks:"Keterangan",s1_title:"1. Kondisi Area Kerja",s1_1:"1.1 Area kerja bersih dari sampah, puing, dan material yang tidak terpakai?",s1_2:"1.2 Jalan menuju area kerja bebas dari halangan?",s1_3:"1.3 Barikade / Zona eksklusi telah didirikan?",s1_4:"1.4 Pencahayaan yang memadai tersedia di area kerja?",s2_title:"2. Alat & Perlengkapan",s2_1:"2.1 Alat telah diperiksa, dibersihkan, dan siap digunakan?",s2_2:"2.2 Mesin berat telah diperiksa, dirawat, dan siap digunakan?",s2_3:"2.3 Lockout / Tagout (LOTO) telah terpasang?",s2_4:"2.4 Alat angkat dan aksesorisnya telah diperiksa dan diberi label?",s3_title:"3. Material",s3_1:"3.1 Material untuk hari berikutnya telah disiapkan dan ditempatkan di area kerja?",s3_2:"3.2 Material berbahaya disimpan dengan aman menggunakan penahan sekunder dan berlabel?",s3_3:"3.3 Inventaris diperiksa untuk menghindari kekurangan / keterlambatan?",s4_title:"4. Keselamatan",s4_1:"4.1 Dokumen untuk pengajuan Izin Kerja (PTW) hari berikutnya telah disiapkan?",s4_2:"4.2 Rambu keselamatan dan barikade terpasang dan terlihat jelas?",s4_3:"4.3 APAR, spill kit, dan kotak P3K tersedia dan mudah diakses?",s4_4:"4.4 MSRA telah disampaikan kepada pekerja dan mereka memahami bahaya serta risiko pekerjaan?",s4_5:"4.5 APD tersedia dan telah diperiksa?",s5_title:"5. Tenaga Kerja",s5_1:"5.1 Rencana tenaga kerja untuk hari berikutnya telah dikonfirmasi?",s5_2:"5.2 Tenaga ahli seperti rigger, flagman, dan petugas keselamatan tersedia?",s6_title:"6. Dokumentasi",s6_1:"6.1 Papan pengumuman keselamatan telah disiapkan dan dipajang di area kerja?",s6_2:"6.2 Gambar terbaru, MSRA, dan daftar periksa telah disiapkan untuk dipajang di papan pengumuman?",prepared_by:"Disiapkan Oleh:",verified_by:"Diverifikasi Oleh:",signature:"Signature:",clear:"Hapus",name_placeholder:"Nama",designation_placeholder:"Jabatan",modal_title:"Apa alasannya?",modal_desc:"Jelaskan pada kotak keterangan",modal_placeholder:"Tulis alasan Anda di sini...",modal_error:"Alasan tidak boleh kosong.",modal_cancel:"Batal",modal_save:"Simpan",toast_text:"Hanya maksimal 26 karakter.",weekdays:["Min","Sen","Sel","Rab","Kam","Jum","Sab"],months:["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],footer_copyright:"Hak Cipta (c) 2025 ",footer_rights:"",meta_description:"Membangun masa depan bangsa yang lebih cerah! Daftar Periksa Kesiapan Kerja kami yang inovatif mendorong pencerahan dan pengembangan intelektual berkelanjutan bagi generasi mendatang."}};let _b="id",_c=null;function _t(e){_b=e,document.querySelectorAll("[data-lang-key]").forEach(t=>{const a=t.dataset.langKey,o=_a[e][a];void 0!==o&&("INPUT"===t.tagName||"TEXTAREA"===t.tagName?t.placeholder=o:t.textContent=o)}),document.getElementById("meta-description").setAttribute("content",_a[e].meta_description),_d()}function _d(){_c&&_c.destroy();const e={weekdays:{shorthand:_a[_b].weekdays,longhand:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]},months:{shorthand:_a[_b].months,longhand:["January","February","March","April","May","June","July","August","September","October","November","December"]},firstDayOfWeek:1};_c=flatpickr("#work-on",{dateFormat:"D, d M y",defaultDate:(new Date).fp_incr(1),locale:e})}document.addEventListener("DOMContentLoaded",e=>{_iSP("signature-prepared","clear-prepared"),_iSP("signature-verified","clear-verified"),_t("id")}),document.getElementById("lang-en").addEventListener("click",()=>_t("en")),document.getElementById("lang-id").addEventListener("click",()=>_t("id"));const remarksModal=document.getElementById("remarksModal"),modalTextarea=document.getElementById("modalTextarea"),modalError=document.getElementById("modalError"),cancelModalBtn=document.getElementById("cancelModal"),saveModalBtn=document.getElementById("saveModal"),modalCharCounter=document.getElementById("modalCharCounter"),toastAlert=document.getElementById("toast-alert"),printButton=document.getElementById("printButton");let _e=null,_f;printButton.addEventListener("click",()=>{window.print()});const _sT=()=>{clearTimeout(_f),toastAlert.textContent=_a[_b].toast_text,toastAlert.classList.remove("opacity-0","translate-x-[120%]"),toastAlert.classList.add("opacity-100","translate-x-0"),_f=setTimeout(()=>{toastAlert.classList.remove("opacity-100","translate-x-0"),toastAlert.classList.add("opacity-0","translate-x-[120%]")},3e3)},_sM=e=>{_e=e;const t=e.closest("tr").querySelector('input[type="text"]').value;modalTextarea.value=t,modalCharCounter.textContent=`${t.length} / 26`,remarksModal.classList.remove("hidden"),setTimeout(()=>{remarksModal.classList.remove("opacity-0"),remarksModal.querySelector(".modal-content").classList.remove("scale-95")},10),modalTextarea.focus()},_hM=()=>{remarksModal.classList.add("opacity-0"),remarksModal.querySelector(".modal-content").classList.add("scale-95"),setTimeout(()=>{remarksModal.classList.add("hidden"),modalTextarea.value="",modalError.classList.add("hidden"),_e=null},300)};modalTextarea.addEventListener("input",()=>{modalCharCounter.textContent=`${modalTextarea.value.length} / 26`}),document.querySelectorAll('td input[type="text"]').forEach(e=>{e.addEventListener("paste",t=>{const a=(t.clipboardData||window.clipboardData).getData("text");e.value.length+a.length>26&&_sT()})}),document.querySelectorAll('input[type="checkbox"]').forEach(e=>{e.addEventListener("click",function(t){const a=this,o=a.closest("tr"),n=o.querySelector('input[type="text"]'),c=o.querySelectorAll('input[type="checkbox"]'),l=o.querySelector('input[data-is-no="true"]');if("true"===a.dataset.isNo)return t.preventDefault(),void _sM(a);a.checked&&c.forEach(e=>{e!==a&&(e.checked=!1)});const d=Array.from(c).some(e=>e.checked);d?(n.readOnly=!1,n.classList.remove("border-red-500"),l.checked&&(n.value="")):(n.readOnly=!0,n.value="",n.classList.remove("border-red-500"))})}),saveModalBtn.addEventListener("click",()=>{if(""===modalTextarea.value.trim())return void modalError.classList.remove("hidden");if(_e){const t=_e.closest("tr"),a=t.querySelector('input[type="text"]'),o=t.querySelectorAll('input[type="checkbox"]');o.forEach(t=>t.checked=t===_e),a.value=modalTextarea.value,a.readOnly=!0,a.classList.add("border-red-500"),_hM()}}),cancelModalBtn.addEventListener("click",_hM),remarksModal.addEventListener("click",function(e){e.target===this&&_hM()});function _iSP(e,t){const a=document.getElementById(e),o=document.getElementById(t);if(!a)return;const n=a.getContext("2d");let c=!1,l=null;function d(e){const t=a.getBoundingClientRect(),o=a.width/t.width,n=a.height/t.height;return e.touches&&e.touches.length>0?{x:(e.touches[0].clientX-t.left)*o,y:(e.touches[0].clientY-t.top)*n}:{x:(e.clientX-t.left)*o,y:(e.clientY-t.top)*n}}function r(e){e.preventDefault(),c=!0,l=d(e)}function s(){c=!1,l=null}function i(e){if(!c)return;e.preventDefault();const t=d(e);n.beginPath(),n.lineWidth=2,n.lineCap="round",n.strokeStyle="#000000",n.moveTo(l.x,l.y),n.lineTo(t.x,t.y),n.stroke(),l=t}a.addEventListener("mousedown",r),a.addEventListener("mouseup",s),a.addEventListener("mousemove",i),a.addEventListener("mouseleave",s),a.addEventListener("touchstart",r),a.addEventListener("touchend",s),a.addEventListener("touchmove",i),o.addEventListener("click",()=>{n.clearRect(0,0,a.width,a.height)})}function _vC(){const e=document.querySelector('footer a[href="https://id.linkedin.com/in/mokhamadabrar"]'),t=document.querySelector('footer span[data-lang-key="footer_copyright"]');let a=!1;e&&t&&"Mokhamad Abrar"===e.textContent.trim()&&(t.textContent.trim().includes("Copyright (c) 2025")||t.textContent.trim().includes("Hak Cipta (c) 2025"))&&(a=!0),a||(document.body.innerHTML='<div style="text-align: center; padding: 50px; font-family: sans-serif; color: red;"><h1>FATAL ERROR</h1><p>Copyright information has been modified or removed. The application cannot continue.</p><p style="color: grey; font-size: 12px;">Please restore the original footer to continue using this application.</p></div>',clearInterval(copyrightInterval))}const copyrightInterval=setInterval(_vC,1e3);
+    </script>
+
+</body>
+</html>
